@@ -18,4 +18,57 @@ class Data(ComponentBase):
     def get_fold_data(self, fold_i, n_folds):
         """Generates and returns a new Data instance that contains only the data for a specific fold.
             This method is used for hyperparameter optimization on multiple folds.
+            
+            :param fold_i: the number of the current fold
+            :param n_folds: the total number of folds
+
+            :return: the data for the specified fold
         """
+
+        raise NotImplementedError()
+
+class Model(ComponentBase):
+    def __init__(self, config, config_global, logger):
+        super(Model, self).__init__(config,config_global, logger)
+        self.__summary = None
+
+    def build(self, data, sess):
+        raise NotImplementedError()
+
+class Training(ComponentBase):
+    def start(self, model, data, sess):
+        """
+        :param model:
+        :type model: Model
+        :param data:
+        :type data:Data
+        """
+
+        raise NotImplementedError()
+
+    def remove_checkpoints(self):
+        """
+            Remove all the persiste checkpoint data that was generated during training
+            for restoring purposes
+        """
+        raise NotImplementedError()
+
+class Evalaution(ComponentBase):
+    def start(self, model, data, sess):
+        """
+        :param model:
+        :type model: Model
+        :param data:
+        :type data:Data
+        """
+        raise NotImplementedError()
+
+class EvalautionProductOfExperts(ComponentBase):
+    def start(self, models, data):
+        """
+        :type models: list[(tensorflow.Session, Model)]
+        :param data: Data
+        :return:
+        """
+        raise NotImplementedError()
+
