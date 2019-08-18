@@ -59,4 +59,46 @@ class QAPool(object):
 		self.ground_truth = ground_truth
 
 class Data(object):
+	def __init__(self, split_name, qa, answers):
+		"""
+		:type split_name: str
+		:type qa: list[QAPool]
+		:type answers: list[TextItem]
+
+		"""
+		self.split_name = split_name
+		self.qa = qa
+		self.answers = answers
+
+class Archive(object):
+	def __init__(self, train, valid, test, questions, answers):
+		"""
+		:type train: Data
+		:type valid: Data
+		:type questions: list[TextItem]
+		:type answers: list[TextItem]
+		"""
+		self.train = train
+		self.valid = valid
+		self.test = test
+		self.questions = questions
+		self.answers = answers
+		self._vocab = None
+
+	@property
+	def vocab(self):
+		"""
+		:rtype: set
+		"""
+		if(self._vocab is None):
+			self._vocab = []
+			for question in self.questions:
+				self._vocab += question.vocab
+
+			for answer in self.answers:
+				self._vocab += answer.vocab
+			self._vocab = unique_items(self._vocab)
+
+		return self._vocab
+
 	
